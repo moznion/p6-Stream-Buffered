@@ -6,13 +6,13 @@ method new(Int $length, Int $maxMemoryBufferSize = 1024 * 1024) returns Stream::
     # $maxMemoryBufferSize = 0  -> Always temp file
     # $maxMemoryBufferSize = -1 -> Always Blob
     my $backend;
-    if ($maxMemoryBufferSize < 0) {
+    if $maxMemoryBufferSize < 0 {
         $backend = "Blob";
-    } elsif ($maxMemoryBufferSize === 0) {
+    } elsif $maxMemoryBufferSize === 0 {
         $backend = "File";
-    } elsif ($length === 0) {
+    } elsif $length === 0 {
         $backend = "Auto";
-    } elsif ($length > $maxMemoryBufferSize) {
+    } elsif $length > $maxMemoryBufferSize {
         $backend = "File";
     } else {
         $backend = "Blob";
