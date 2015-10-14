@@ -4,7 +4,15 @@ use IO::Blob;
 
 unit class Stream::Buffered::Blob is Stream::Buffered;
 
-has IO::Blob $!blob = IO::Blob.new;
+has IO::Blob $!blob;
+
+submethod BUILD(:$blob) {
+    $!blob = $blob;
+}
+
+method new() {
+    self.bless(:blob(IO::Blob.new));
+}
 
 method print(Stream::Buffered::Blob:D: *@text) returns Bool {
     return $!blob.print(@text);

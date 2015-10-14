@@ -3,8 +3,20 @@ use Stream::Buffered;
 
 unit class Stream::Buffered::Auto is Stream::Buffered;
 
-has Stream::Buffered $!buffer = Stream::Buffered.create('Blob');
+has Stream::Buffered $!buffer;
 has Int $!maxMemoryBufferSize;
+
+submethod BUILD(:$buffer, :$maxMemoryBufferSize) {
+    $!buffer              = $buffer;
+    $!maxMemoryBufferSize = $maxMemoryBufferSize;
+}
+
+method new(:$maxMemoryBufferSize!) {
+    self.bless(
+        :buffer(Stream::Buffered.create('Blob')),
+        :maxMemoryBufferSize($maxMemoryBufferSize)
+    );
+}
 
 method print(Stream::Buffered::Auto:D: *@text) returns Bool {
     my $status = $!buffer.print(@text);

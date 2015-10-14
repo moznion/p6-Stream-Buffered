@@ -1,7 +1,4 @@
 use v6;
-use Stream::Buffered::Auto;
-use Stream::Buffered::Blob;
-use Stream::Buffered::File;
 
 unit class Stream::Buffered;
 
@@ -21,14 +18,11 @@ method new(Int $length, Int $maxMemoryBufferSize = 1024 * 1024) returns Stream::
         $backend = "Blob";
     }
 
-    return self.create($length, $maxMemoryBufferSize);
+    return Stream::Buffered.create($backend, :$maxMemoryBufferSize);
 }
 
-method create(Stream::Buffered::U: Str $backend) {
-    return ::("Stream::Buffered::$backend").new();
-}
-
-method create(Stream::Buffered::U: Str $backend, Int $maxMemoryBufferSize) {
+method create(Stream::Buffered:U: Str $backend, Int :$maxMemoryBufferSize) {
+    require ::("Stream::Buffered::$backend");
     return ::("Stream::Buffered::$backend").new(:$maxMemoryBufferSize);
 }
 
